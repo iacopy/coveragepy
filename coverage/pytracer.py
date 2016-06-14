@@ -43,7 +43,7 @@ class PyTracer(object):
         # The threading module to use, if any.
         self.threading = None
 
-        self.cur_file_dict = []
+        self.cur_file_dict = None
         self.last_line = [0]
 
         self.data_stack = []
