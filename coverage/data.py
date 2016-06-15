@@ -519,7 +519,6 @@ class CoverageData(object):
                 if filename in self._lines:
                     lines = set(self._lines[filename])
                     lines.update(file_lines)
-                    file_lines = list(lines)
                 self._lines[filename] = file_lines
 
         # _arcs: merge dicts.
