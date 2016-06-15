@@ -20,8 +20,8 @@ from tests.coveragetest import CoverageTest, DebugControlString
 
 
 LINES_1 = {
-    'a.py': {1: None, 2: None},
-    'b.py': {3: None},
+    'a.py': {1: 1, 2: 1},
+    'b.py': {3: 1},
 }
 SUMMARY_1 = {'a.py': 2, 'b.py': 1}
 MEASURED_FILES_1 = ['a.py', 'b.py']
@@ -29,8 +29,8 @@ A_PY_LINES_1 = [1, 2]
 B_PY_LINES_1 = [3]
 
 LINES_2 = {
-    'a.py': {1: None, 5: None},
-    'c.py': {17: None},
+    'a.py': {1: 1, 5: 1},
+    'c.py': {17: 1},
 }
 SUMMARY_1_2 = {'a.py': 3, 'b.py': 1, 'c.py': 1}
 MEASURED_FILES_1_2 = ['a.py', 'b.py', 'c.py']
@@ -490,8 +490,8 @@ class CoverageDataTestInTempDir(DataTestHelpers, CoverageTest):
         expected = {
             ".coverage": {
                 "lines": {
-                    "a.py": [1, 2],
-                    "b.py": [3],
+                    "a.py": ['1', '2'],
+                    "b.py": ['3'],
                 },
             },
             "arcs.dat": {
@@ -664,8 +664,8 @@ class CoverageDataFilesTest(DataTestHelpers, CoverageTest):
 
         lines = data['lines']
         self.assertCountEqual(lines.keys(), MEASURED_FILES_1)
-        self.assertCountEqual(lines['a.py'], A_PY_LINES_1)
-        self.assertCountEqual(lines['b.py'], B_PY_LINES_1)
+        self.assertCountEqual(lines['a.py'], [str(line) for line in A_PY_LINES_1])
+        self.assertCountEqual(lines['b.py'], [str(line) for line in B_PY_LINES_1])
         # If not measuring branches, there's no arcs entry.
         self.assertNotIn('arcs', data)
         # If no file tracers were involved, there's no file_tracers entry.
