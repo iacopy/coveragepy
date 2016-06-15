@@ -1,0 +1,7 @@
+__pycache__
+.idea
+.tox
+.venv
+build
+dist
+*.pyc
