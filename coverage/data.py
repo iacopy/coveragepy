@@ -311,7 +311,14 @@ class CoverageData(object):
         go_away = file_obj.read(len(cls._GO_AWAY))
         if go_away != cls._GO_AWAY:
             raise CoverageException("Doesn't seem to be a coverage.py data file")
-        return json.load(file_obj)
+        raw = json.load(file_obj)
+        # Now convert the subdict string keys to integers
+        # raw = {'filename': {'1': 5, '10': 3}, 'other_filename': {'3': 2, '123': 1, '5': 15}}
+        # =>    {'filename': {1: 5, 10: 3}, 'other_filename': {3: 2, 5: 15, 123: 1}}
+        if 'lines' in raw:
+            lines = raw['lines']
+            raw['lines'] = {fn: {int(key): val for (key, val) in lines[fn].items()} for fn in lines.keys()}
+        return raw
 
     @classmethod
     def _read_raw_data_file(cls, filename):
@@ -328,7 +335,7 @@ class CoverageData(object):
 
         `line_data` is a dictionary mapping file names to dictionaries::
 
-            { filename: { lineno: None, ... }, ...}
+            { filename: { lineno: `Counter`, ... }, ...}
 
         """
         if self._debug and self._debug.should('dataop'):
@@ -345,7 +352,7 @@ class CoverageData(object):
                 new_linenos = set(self._lines[filename])
                 new_linenos.update(linenos)
                 linenos = new_linenos
-            self._lines[filename] = list(linenos)
+            self._lines[filename] = linenos  # Counter
 
         self._validate()
 
@@ -451,6 +458,7 @@ class CoverageData(object):
 
         # Write the data to the file.
         file_obj.write(self._GO_AWAY)
+        # NB: keys are dumped as strings!
         json.dump(file_data, file_obj)
 
     def write_file(self, filename):
