@@ -3,6 +3,7 @@
 
 """Raw data collector for coverage.py."""
 
+from collections import Counter
 import dis
 import sys
 
@@ -88,7 +89,7 @@ class PyTracer(object):
             if disp.trace:
                 tracename = disp.source_filename
                 if tracename not in self.data:
-                    self.data[tracename] = {}
+                    self.data[tracename] = Counter()
                 self.cur_file_dict = self.data[tracename]
             # The call event is really a "start frame" event, and happens for
             # function calls and re-entering generators.  The f_lasti field is
@@ -105,7 +106,7 @@ class PyTracer(object):
                 if self.trace_arcs:
                     self.cur_file_dict[(self.last_line, lineno)] = None
                 else:
-                    self.cur_file_dict[lineno] = None
+                    self.cur_file_dict[lineno] += 1
                 self.last_line = lineno
         elif event == 'return':
             if self.trace_arcs and self.cur_file_dict:
