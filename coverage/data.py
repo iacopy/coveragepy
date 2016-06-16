@@ -517,9 +517,11 @@ class CoverageData(object):
             for filename, file_lines in iitems(other_data._lines):
                 filename = aliases.map(filename)
                 if filename in self._lines:
-                    lines = set(self._lines[filename])
+                    lines = self._lines[filename]
                     lines.update(file_lines)
-                self._lines[filename] = file_lines
+                    self._lines[filename] = lines
+                else:
+                    self._lines[filename] = file_lines
 
         # _arcs: merge dicts.
         if other_data._has_arcs():
