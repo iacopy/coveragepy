@@ -75,3 +75,4 @@ For details, see https://bitbucket.org/ned/coveragepy/src/default/NOTICE.txt.
 .. |codecov| image:: http://codecov.io/github/nedbat/coveragepy/coverage.svg?branch=master
     :target: http://codecov.io/github/nedbat/coveragepy?branch=master
     :alt: Coverage!
+.. |coveralls| image:: https://coveralls.io/repos/github/iacopy/coveragepy/badge.svg?branch=master :target: https://coveralls.io/github/iacopy/coveragepy?branch=master
