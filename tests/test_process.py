@@ -181,6 +181,36 @@ class ProcessTest(CoverageTest):
         data.read_file(".coverage")
         self.assertEqual(data.line_counts()['b_or_c.py'], 7)
 
+
+    def test_append_data_pytracer(self):
+        """Test for --append option: combining coverage resulting from 2 runs of same file with different
+        command line arguments.
+        """
+        self.make_b_or_c_py()
+
+        # This first run should cover lines [1, 2, 3, *4*, 7, 8]
+        out = self.run_command("coverage run --timid b_or_c.py b")
+        self.assertEqual(out, 'done\n')
+        self.assert_exists(".coverage")
+        self.assertEqual(self.number_of_data_files(), 1)
+        data = coverage.CoverageData()
+        data.read_file(".coverage")
+        self.assertEqual(list(data._lines.values())[0], {1: 1, 2: 1, 3: 1, 4: 1, 7: 1, 8: 1})
+
+        # This second run should cover lines [1, 2, 3, *6*, 7, 8]
+        # TODO: add check for this step (could be a new class `AppendTests` with preconditions checks).
+        out = self.run_command("coverage run --timid --append b_or_c.py c")
+        self.assertEqual(out, 'done\n')
+        self.assert_exists(".coverage")
+        self.assertEqual(self.number_of_data_files(), 1)
+
+        # Read the coverage file and see that b_or_c.py has all 7 lines
+        # executed.
+        data = coverage.CoverageData()
+        data.read_file(".coverage")
+        self.assertEqual(data.line_counts()['b_or_c.py'], 7)
+        self.assertEqual(list(data._lines.values())[0], {1: 2, 2: 2, 3: 2, 4: 1, 6: 1, 7: 2, 8: 2})
+
     def test_append_data_with_different_file(self):
         self.make_b_or_c_py()
 
