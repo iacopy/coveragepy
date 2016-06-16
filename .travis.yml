@@ -9,10 +9,14 @@ python:
   - 3.5
 
 env:
-  - TOXENV=py27
-  - TOXENV=pypy
+  #- TOXENV=py26
+  #- TOXENV=py27
+  #- TOXENV=py33
+  #- TOXENV=py34
   - TOXENV=py35
-  - TOXENV=py35 COVERAGE_COVERAGE=yes
+  #- TOXENV=pypy
+  #- TOXENV=py27 COVERAGE_COVERAGE=yes
+  #- TOXENV=py35 COVERAGE_COVERAGE=yes
 
 sudo: false
 
