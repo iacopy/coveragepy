@@ -23,3 +23,6 @@ script:
   - if [ $COVERAGE_COVERAGE == 'yes' ]; then python igor.py combine_html; fi
   - if [ $COVERAGE_COVERAGE == 'yes' ]; then pip install codecov; fi
   - if [ $COVERAGE_COVERAGE == 'yes' ]; then codecov; fi
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
