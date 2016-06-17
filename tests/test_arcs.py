@@ -10,6 +10,10 @@ from coverage import env
 from coverage.files import abs_file
 
 
+if env.PYVERSION < (3, 5):
+    raise Exception('environment error. It results < 3.5 ({})'.format(env.PYVERSION))
+
+
 class SimpleArcTest(CoverageTest):
     """Tests for coverage.py's arc measurement."""
 
