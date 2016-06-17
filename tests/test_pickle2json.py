@@ -13,6 +13,7 @@ from tests.test_data import DataTestHelpers, LINES_1, ARCS_3
 
 class Pickle2JsonTestInTempDir(DataTestHelpers, CoverageTest):
     """Tests pickle2json.py."""
+    # FIXME: In some cases it passes if ran alone and fails if ran with other tests.
 
     no_files_in_temp_dir = True
 
@@ -21,10 +22,11 @@ class Pickle2JsonTestInTempDir(DataTestHelpers, CoverageTest):
         # Create the file data.
         file_data = {}
 
+        # WARNING: manipulates data inside a test
         if covdata._arcs:
             file_data['arcs'] = dict((f, list(amap)) for f, amap in iitems(covdata._arcs))
         else:
-            file_data['lines'] = dict((f, list(lmap)) for f, lmap in iitems(covdata._lines))
+            file_data['lines'] = covdata._lines
 
         # Write the pickle to the file.
         with open(filename, 'wb') as file_obj:
