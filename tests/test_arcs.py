@@ -401,7 +401,10 @@ class LoopArcTest(CoverageTest):
             self.skipTest("Don't have set or dict comprehensions before 2.7")
         if env.PYVERSION < (3, 5):
             arcz = "-42 2B B-4   2-4"
+            print('< 3.5 !')
+            raise Exception('Unexpected errorrrrrrrr')
         else:
+            print('>= 3.5 !!')
             arcz = "-32 2B B-3   2-3"
         # Multiline dict comp:
         self.check_coverage("""\
@@ -422,8 +425,10 @@ class LoopArcTest(CoverageTest):
         # Multi dict comp:
         if env.PYVERSION < (3, 5):
             arcz = "-42 2F F-4   2-4"
+            print('< 3.5')
         else:
             arcz = "-32 2F F-3   2-3"
+            print('>= 3.5')
         self.check_coverage("""\
             # comment
             d = \\
