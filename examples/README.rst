@@ -24,15 +24,17 @@ Also contains some useful bash script as example for the usage.
 
 * Workflow
 
+
 .. code:: bash
 
     # Update the code...
     # Update the build:
     $ python setup.py install
 
-    # Run (with pytracer) and see coverage results
+    # Run and see coverage results
+    $ rm -rf htmlcov/
     $ coverage erase
-    $ coverage run --timid test_zero.py  # for example
+    $ coverage run [--timid] [--branch] test_zero.py  # for example
     $ coverage html
     $ open htmlcov/index.html
 
