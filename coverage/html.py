@@ -5,6 +5,7 @@
 
 import datetime
 import json
+import math
 import os
 import shutil
 
@@ -70,24 +71,24 @@ def write_html(fname, html):
         fout.write(html.encode('ascii', 'xmlcharrefreplace'))
 
 
-def line_count2class(line_count):
+def line_count2class(line_count, log_base=2, n_colors=16):
     """Given the number of times that a line was executed, returns
     the html class for the heat map.
 
     NB: Proof of concept
     """
-    # TODO: do not user here-hardcoded classes
+    if line_count < 0:
+        raise Exception("Programming error: `line_count` must be positive. Got: {}".format(line_count))
+
     if line_count == 0:
         return 'mis'
-    elif line_count < 10:
-        return 'low'
-    elif 2 <= line_count < 100:
-        return 'medium'
-    elif line_count >= 100:
-        return 'high'
 
-    # No negative `line_count`...
-    assert 'Unexpected line_count: {}'.format(line_count)
+    log_n = int(math.log(line_count, log_base))
+
+    if log_n > n_colors - 1:
+        log_n = n_colors - 1
+
+    return 'count{log}'.format(log=log_n)
 
 
 class HtmlReporter(Reporter):
