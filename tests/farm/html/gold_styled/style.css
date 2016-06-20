@@ -129,6 +129,26 @@ h2.stats {
 .stats span.run {
     background: #ddffdd;
 }
+
+/* heatmap coloring */
+.text p.count0 { background: #fff; }
+.text p.count1 { background: #efe; }
+.text p.count2 { background: #dfd; }
+.text p.count3 { background: #cfc; }
+.text p.count4 { background: #bfb; }
+.text p.count5 { background: #afa; }
+.text p.count6 { background: #9f9; }
+.text p.count7 { background: #8f8; }
+.text p.count8 { background: #7f7; }
+.text p.count9 { background: #6f6; }
+.text p.count10 { background: #5f5; }
+.text p.count11 { background: #4f4; }
+.text p.count12 { background: #3f3; }
+.text p.count13 { background: #2f2; }
+.text p.count14 { background: #1f1; }
+.text p.count15 { background: #0f0; }
+.text p.count_max { background: #0dd; }
+
 .stats span.exc {
     background: #eeeeee;
 }
