@@ -239,6 +239,12 @@ td.text {
     background: #ddffdd;
     border-left: 2px solid #00ff00;
     }
+.text p.medium {
+    background: #bbffbb;
+}
+.text p.high {
+    background: #99ff99;
+}
 .text p.exc {
     background: #eeeeee;
     border-left: 2px solid #808080;
