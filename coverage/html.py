@@ -70,6 +70,26 @@ def write_html(fname, html):
         fout.write(html.encode('ascii', 'xmlcharrefreplace'))
 
 
+def line_count2class(line_count):
+    """Given the number of times that a line was executed, returns
+    the html class for the heat map.
+
+    NB: Proof of concept
+    """
+    # TODO: do not user here-hardcoded classes
+    if line_count == 0:
+        return 'mis'
+    elif line_count < 10:
+        return 'low'
+    elif 2 <= line_count < 100:
+        return 'medium'
+    elif line_count >= 100:
+        return 'high'
+
+    # No negative `line_count`...
+    assert 'Unexpected line_count: {}'.format(line_count)
+
+
 class HtmlReporter(Reporter):
     """HTML reporting."""
 
@@ -200,6 +220,8 @@ class HtmlReporter(Reporter):
         lines = []
 
         for lineno, line in enumerate(fr.source_token_lines(), start=1):
+            line_count = analysis.data.lines(fr.filename).get(lineno, 0)
+
             # Figure out how to mark this line.
             line_class = []
             annotate_html = ""
@@ -235,6 +257,11 @@ class HtmlReporter(Reporter):
                     )
             elif lineno in analysis.statements:
                 line_class.append(c_run)
+
+                # Add class for the heat map
+                c_count = line_count2class(line_count)
+                if c_count not in line_class:
+                    line_class.append(c_count)
 
             # Build the HTML for the line.
             html = []
