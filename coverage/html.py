@@ -221,8 +221,6 @@ class HtmlReporter(Reporter):
         lines = []
 
         for lineno, line in enumerate(fr.source_token_lines(), start=1):
-            line_count = analysis.data.lines(fr.filename).get(lineno, 0)
-
             # Figure out how to mark this line.
             line_class = []
             annotate_html = ""
@@ -259,10 +257,12 @@ class HtmlReporter(Reporter):
             elif lineno in analysis.statements:
                 line_class.append(c_run)
 
-                # Add class for the heat map
-                c_count = line_count2class(line_count)
-                if c_count not in line_class:
-                    line_class.append(c_count)
+                if not self.has_arcs:
+                    # Add class for the heat map
+                    line_count = analysis.data.lines(fr.filename).get(lineno, 0)
+                    c_count = line_count2class(line_count)
+                    if c_count not in line_class:
+                        line_class.append(c_count)
 
             # Build the HTML for the line.
             html = []
