@@ -40,6 +40,8 @@
             {% if has_arcs %}
                 <span class="{{c_par}} shortkey_p button_toggle_par">{{nums.n_partial_branches}} partial</span>
             {% endif %}
+
+            <span class="shortkey_a button_toggle_all hide_all">toggle all</span>
         </h2>
     </div>
 </div>
@@ -53,6 +55,9 @@
         <span class="key">m</span>
         <span class="key">x</span>
         <span class="key">p</span> &nbsp; toggle line displays
+    </p>
+    <p class="keyhelp">
+        <span class="key">a</span> &nbsp; toggle all line displays
     </p>
     <p class="keyhelp">
         <span class="key">j</span>
@@ -72,7 +77,19 @@
         <tr>
             <td class="linenos">
 {% for line in lines -%}
-    <p id="n{{line.number}}" class="{{line.class}}"><a href="#n{{line.number}}">{{line.number}}</a></p>
+    <p id="n{{line.number}}" class="{{line.class}}">
+        <a href="#n{{line.number}}">{{line.number}}</a>
+    </p>
+{% endfor %}
+            </td>
+            <td class="linecount">
+{% for line in lines -%}
+    <p>
+        {% if line.num_executes -%}
+            <span>{{line.num_executes}}x</span>
+        {% endif -%}
+        &nbsp;
+    </p>
 {% endfor %}
             </td>
             <td class="text">
