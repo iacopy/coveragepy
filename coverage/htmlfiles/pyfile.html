@@ -42,6 +42,7 @@
             {% endif %}
 
             <span class="shortkey_a button_toggle_all hide_all">toggle all</span>
+            <span class="shortkey_l button_toggle_line_counters hide_counters">toggle line counters</span>
         </h2>
     </div>
 </div>
@@ -82,7 +83,7 @@
     </p>
 {% endfor %}
             </td>
-            <td class="linecount">
+            <td class="linecount hide_counters">
 {% for line in lines -%}
     <p>
         {% if line.num_executes -%}

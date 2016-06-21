@@ -295,6 +295,7 @@ coverage.pyfile_ready = function ($) {
     $(".button_toggle_mis").click(function (evt) {coverage.toggle_lines(evt.target, "mis");});
     $(".button_toggle_par").click(function (evt) {coverage.toggle_lines(evt.target, "par");});
     $(".button_toggle_all").click(function (evt) {coverage.toggle_all(evt.target);});
+    $(".button_toggle_line_counters").click(function (evt) {coverage.toggle_line_counters(evt.target);});
 
     coverage.assign_shortkeys();
     coverage.wire_up_help_panel();
@@ -335,6 +336,19 @@ coverage.toggle_all = function (btn) {
           $(".button_toggle_" + action).addClass('hide_' + action);
         })
 
+        btn.addClass(hide);
+    }
+};
+
+coverage.toggle_line_counters = function (btn) {
+    btn = $(btn);
+    var hide = "hide_counters";
+    if (btn.hasClass(hide)) {
+        $("#source .linecount").removeClass('hide_counters');
+        btn.removeClass(hide);
+    }
+    else {
+        $("#source .linecount").addClass('hide_counters');
         btn.addClass(hide);
     }
 };

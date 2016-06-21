@@ -152,6 +152,16 @@ h2.stats {
     background: #ffffcc;
 }
 
+.stats .button_toggle_all,
+.stats .button_toggle_line_counters {
+    background: #aaaaff;
+}
+
+.stats .button_toggle_all.hide_all,
+.stats .button_toggle_line_counters.hide_counters {
+    background: #eeeeff;
+}
+
 /* Help panel */
 #keyboard_icon {
     float: right;
@@ -165,6 +175,7 @@ h2.stats {
     padding: .5em;
     border: 1px solid #883;
     display: none;
+    z-index: 20;
 }
 
 .indexfile .help_panel {
@@ -172,7 +183,7 @@ h2.stats {
 }
 
 .pyfile .help_panel {
-    width: 16em; height: 8em;
+    width: 16em; height: 10em;
 }
 
 .help_panel .legend {
@@ -231,6 +242,10 @@ h2.stats {
     text-align: right;
     width: 100%;
     display: inline-block;
+}
+
+.linecount.hide_counters {
+    display: none;
 }
 
 td.text {
