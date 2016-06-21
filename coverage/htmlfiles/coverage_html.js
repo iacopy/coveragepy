@@ -231,6 +231,39 @@ coverage.index_ready = function ($) {
     coverage.wire_up_help_panel();
     coverage.wire_up_filter();
 
+    // Add heat map to index.html rows
+    $("table.index > tbody > tr.file")
+      .each(function (index, node) {
+        var $node = $(node);
+        var percentage = parseFloat($node.find('[data-percentage]').data('percentage'));
+        var color = 'rgba(150, 255, 150, 0)';
+
+        if (isNaN(percentage)) {
+          return;
+        }
+
+        if (percentage < 80) {
+          color = 'rgba(255, 150, 150, 0.4)';
+        } else if (percentage > 98) {
+          color = 'rgba(150, 255, 150, 0.8)';
+        } else if (percentage > 96) {
+          color = 'rgba(150, 255, 150, 0.7)';
+        } else if (percentage > 94) {
+          color = 'rgba(150, 255, 150, 0.6)';
+        } else if (percentage > 92) {
+          color = 'rgba(150, 255, 150, 0.5)';
+        } else if (percentage > 90) {
+          color = 'rgba(150, 255, 150, 0.4)';
+        } else if (percentage > 86) {
+          color = 'rgba(150, 255, 150, 0.3)';
+        } else if (percentage > 82) {
+          color = 'rgba(150, 255, 150, 0.2)';
+        }
+
+        $node.css('background-color', color);
+
+      });
+
     // Watch for page unload events so we can save the final sort settings:
     $(window).unload(function () {
         document.cookie = cookie_name + "=" + sort_list.toString() + "; path=/";
@@ -261,6 +294,7 @@ coverage.pyfile_ready = function ($) {
     $(".button_toggle_exc").click(function (evt) {coverage.toggle_lines(evt.target, "exc");});
     $(".button_toggle_mis").click(function (evt) {coverage.toggle_lines(evt.target, "mis");});
     $(".button_toggle_par").click(function (evt) {coverage.toggle_lines(evt.target, "par");});
+    $(".button_toggle_all").click(function (evt) {coverage.toggle_all(evt.target);});
 
     coverage.assign_shortkeys();
     coverage.wire_up_help_panel();
@@ -280,6 +314,27 @@ coverage.toggle_lines = function (btn, cls) {
     }
     else {
         $("#source ."+cls).addClass(hide);
+        btn.addClass(hide);
+    }
+};
+
+coverage.toggle_all = function (btn) {
+    btn = $(btn);
+    var hide = "hide_all";
+    if (btn.hasClass(hide)) {
+        $.each(['run', 'exc', 'mis', 'par'], function (index, action) {
+          $("#source ." + action).removeClass('hide_' + action);
+          $(".button_toggle_" + action).removeClass('hide_' + action);
+        })
+
+        btn.removeClass(hide);
+    }
+    else {
+        $.each(['run', 'exc', 'mis', 'par'], function (index, action) {
+          $("#source ." + action).addClass('hide_' + action);
+          $(".button_toggle_" + action).addClass('hide_' + action);
+        })
+
         btn.addClass(hide);
     }
 };
