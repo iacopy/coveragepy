@@ -207,6 +207,7 @@ h2.stats {
     font-family: verdana, sans-serif;
     font-size: .625em;   /* 10/16 */
     line-height: 1.6em;  /* 16/10 */
+    white-space: nowrap;
     }
 .linenos p.highlight {
     background: #ffdd00;
@@ -219,6 +220,18 @@ h2.stats {
     text-decoration: underline;
     color: #999999;
     }
+
+.linecount p {
+    padding: 0 3px;
+    white-space: nowrap;
+}
+.linecount p span {
+    background: #ccc;
+    color: #333;
+    text-align: right;
+    width: 100%;
+    display: inline-block;
+}
 
 td.text {
     width: 100%;

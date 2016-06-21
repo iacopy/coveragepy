@@ -222,6 +222,7 @@ class HtmlReporter(Reporter):
 
         for lineno, line in enumerate(fr.source_token_lines(), start=1):
             # Figure out how to mark this line.
+            line_count = None
             line_class = []
             annotate_html = ""
             annotate_long = ""
@@ -281,6 +282,7 @@ class HtmlReporter(Reporter):
                 'class': ' '.join(line_class) or "pln",
                 'annotate': annotate_html,
                 'annotate_long': annotate_long,
+                'num_executes': line_count,
             })
 
         # Write the HTML page for this file.

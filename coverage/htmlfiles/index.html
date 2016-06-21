@@ -94,7 +94,8 @@
                 <td>{{file.nums.n_branches}}</td>
                 <td>{{file.nums.n_partial_branches}}</td>
                 {% endif %}
-                <td class="right" data-ratio="{{file.nums.ratio_covered|pair}}">{{file.nums.pc_covered_str}}%</td>
+                <td class="right" data-ratio="{{file.nums.ratio_covered|pair}}"
+                    data-percentage="{{file.nums.pc_covered_str}}">{{file.nums.pc_covered_str}}%</td>
             </tr>
             {% endfor %}
         </tbody>

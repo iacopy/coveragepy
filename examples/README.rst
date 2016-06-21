@@ -20,6 +20,7 @@ Also contains some useful bash script as example for the usage.
 
     # Build coverage
     $ python setup.py install
+    $ python setup.py develop
 
 
 * Workflow
