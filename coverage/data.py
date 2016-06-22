@@ -3,6 +3,7 @@
 
 """Coverage data for coverage.py."""
 
+from collections import Counter
 import glob
 import itertools
 import json
@@ -168,7 +169,7 @@ class CoverageData(object):
         """
         return self._has_arcs()
 
-    def lines(self, filename):
+    def lines(self, filename, count=False):
         """Get the list of lines executed for a file.
 
         If the file was not measured, returns None.  A file might be measured,
@@ -181,8 +182,15 @@ class CoverageData(object):
         if self._arcs is not None:
             arcs = self._arcs.get(filename)
             if arcs is not None:
-                all_lines = itertools.chain.from_iterable(arcs)
-                return list(set(l for l in all_lines if l > 0))
+                if count:
+                    res = Counter()
+                    for pair, count in arcs.items():
+                        if pair[0] > 0:
+                            res[pair[0]] += count
+                    return res
+                else:
+                    all_lines = itertools.chain.from_iterable(arcs)
+                    return list(set(l for l in all_lines if l > 0))
         elif self._lines is not None:
             return self._lines.get(filename)
         return None
