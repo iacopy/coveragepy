@@ -283,11 +283,8 @@ class CoverageData(object):
         if 'lines' in data:
             self._lines = data['lines']
         if 'arcs' in data:
-            # Convert pair string keys in tuples
-            self._arcs = dict(
-                (fname, {eval(pair): count for pair, count in arcs.items()})
-                for fname, arcs in iitems(data['arcs'])
-            )
+            self._arcs = parse_json_loaded_arcs(data['arcs'])
+
         self._file_tracers = data.get('file_tracers', {})
         self._runs = data.get('runs', [])
 
@@ -735,6 +732,18 @@ class CoverageDataFiles(object):
             else:
                 data.update(new_data, aliases=aliases)
                 file_be_gone(f)
+
+
+def parse_json_loaded_arcs(arcs):
+    """Convert pair string keys in tuples.
+
+    >>> parse_json_arcs({'a.py': {'(1, 2)': 5, '(2, 3)': 8}}) == {'a.py': {(1, 2): 5, (2, 3): 8}}
+    True
+    """
+    return dict(
+        (fname, {eval(pair): count for pair, count in file_arcs.items()})
+        for fname, file_arcs in iitems(arcs)
+    )
 
 
 def canonicalize_json_data(data):
