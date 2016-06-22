@@ -538,10 +538,9 @@ class CoverageData(object):
                 self._arcs = {}
             for filename, file_arcs in iitems(other_data._arcs):
                 filename = aliases.map(filename)
-                if filename in self._arcs:
-                    arcs = set(self._arcs[filename])
-                    arcs.update(file_arcs)
-                self._arcs[filename] = file_arcs
+                if filename not in self._arcs:
+                    self._arcs[filename] = {}
+                self._arcs[filename].update(file_arcs)
 
         self._validate()
 
