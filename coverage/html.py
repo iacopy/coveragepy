@@ -258,12 +258,11 @@ class HtmlReporter(Reporter):
             elif lineno in analysis.statements:
                 line_class.append(c_run)
 
-                if not self.has_arcs:
-                    # Add class for the heat map
-                    line_count = analysis.data.lines(fr.filename).get(lineno, 0)
-                    c_count = line_count2class(line_count)
-                    if c_count not in line_class:
-                        line_class.append(c_count)
+                # Add class for the heat map
+                line_count = analysis.data.lines(fr.filename, count=True).get(lineno, 0)
+                c_count = line_count2class(line_count)
+                if c_count not in line_class:
+                    line_class.append(c_count)
 
             # Build the HTML for the line.
             html = []
