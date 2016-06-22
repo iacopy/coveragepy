@@ -13,7 +13,8 @@ import unittest
 import mock
 
 from coverage.backward import StringIO
-from coverage.data import CoverageData, CoverageDataFiles, debug_main, canonicalize_json_data
+from coverage.data import (CoverageData, CoverageDataFiles, debug_main, canonicalize_json_data,
+                           parse_json_loaded_arcs)
 from coverage.files import PathAliases, canonical_filename
 from coverage.misc import CoverageException
 
@@ -38,19 +39,19 @@ MEASURED_FILES_1_2 = ['a.py', 'b.py', 'c.py']
 
 ARCS_3 = {
     'x.py': {
-        (-1, 1): None,
-        (1, 2): None,
-        (2, 3): None,
-        (3, -1): None,
+        (-1, 1): 1,
+        (1, 2): 1,
+        (2, 3): 1,
+        (3, -1): 1,
     },
     'y.py': {
-        (-1, 17): None,
-        (17, 23): None,
-        (23, -1): None,
+        (-1, 17): 1,
+        (17, 23): 1,
+        (23, -1): 1,
     },
 }
-X_PY_ARCS_3 = [(-1, 1), (1, 2), (2, 3), (3, -1)]
-Y_PY_ARCS_3 = [(-1, 17), (17, 23), (23, -1)]
+X_PY_ARCS_3 = {'(-1, 1)': 1, '(1, 2)': 1, '(2, 3)': 1, '(3, -1)': 1}
+Y_PY_ARCS_3 = {'(-1, 17)': 1, '(17, 23)': 1, '(23, -1)': 1}
 SUMMARY_3 = {'x.py': 3, 'y.py': 2}
 MEASURED_FILES_3 = ['x.py', 'y.py']
 X_PY_LINES_3 = [1, 2, 3]
@@ -58,13 +59,13 @@ Y_PY_LINES_3 = [17, 23]
 
 ARCS_4 = {
     'x.py': {
-        (-1, 2): None,
-        (2, 5): None,
-        (5, -1): None,
+        (-1, 2): 1,
+        (2, 5): 1,
+        (5, -1): 1,
     },
     'z.py': {
-        (-1, 1000): None,
-        (1000, -1): None,
+        (-1, 1000): 1,
+        (1000, -1): 1,
     },
 }
 SUMMARY_3_4 = {'x.py': 4, 'y.py': 2, 'z.py': 1}
@@ -95,9 +96,10 @@ class DataTestHelpers(CoverageTest):
         self.assert_line_counts(covdata, SUMMARY_3)
         self.assert_measured_files(covdata, MEASURED_FILES_3)
         self.assertCountEqual(covdata.lines("x.py"), X_PY_LINES_3)
-        self.assertCountEqual(covdata.arcs("x.py"), X_PY_ARCS_3)
+        after_load = parse_json_loaded_arcs({'x.py': X_PY_ARCS_3, 'y.py': Y_PY_ARCS_3})
+        self.assertCountEqual(covdata.arcs("x.py"), after_load['x.py'])
         self.assertCountEqual(covdata.lines("y.py"), Y_PY_LINES_3)
-        self.assertCountEqual(covdata.arcs("y.py"), Y_PY_ARCS_3)
+        self.assertCountEqual(covdata.arcs("y.py"), after_load['y.py'])
         self.assertTrue(covdata.has_arcs())
         self.assertEqual(covdata.run_infos(), [])
 
@@ -684,8 +686,8 @@ class CoverageDataFilesTest(DataTestHelpers, CoverageTest):
         self.assertNotIn('lines', data)
         arcs = data['arcs']
         self.assertCountEqual(arcs.keys(), MEASURED_FILES_3)
-        self.assertCountEqual(arcs['x.py'], map(list, X_PY_ARCS_3))
-        self.assertCountEqual(arcs['y.py'], map(list, Y_PY_ARCS_3))
+        self.assertCountEqual(arcs['x.py'], X_PY_ARCS_3)
+        self.assertCountEqual(arcs['y.py'], Y_PY_ARCS_3)
         # If no file tracers were involved, there's no file_tracers entry.
         self.assertNotIn('file_tracers', data)
 
