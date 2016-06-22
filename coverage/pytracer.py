@@ -71,7 +71,7 @@ class PyTracer(object):
                 # Someone forgot a return event.
                 if self.trace_arcs and self.cur_file_dict:
                     pair = (self.last_line, -self.last_exc_firstlineno)
-                    self.cur_file_dict[pair] = None
+                    self.cur_file_dict[pair] += 1
                 self.cur_file_dict, self.last_line = self.data_stack.pop()
             self.last_exc_back = None
 
@@ -104,7 +104,7 @@ class PyTracer(object):
             if self.cur_file_dict is not None:
                 lineno = frame.f_lineno
                 if self.trace_arcs:
-                    self.cur_file_dict[(self.last_line, lineno)] = None
+                    self.cur_file_dict[(self.last_line, lineno)] += 1
                 else:
                     self.cur_file_dict[lineno] += 1
                 self.last_line = lineno
@@ -115,7 +115,7 @@ class PyTracer(object):
                 bytecode = frame.f_code.co_code[frame.f_lasti]
                 if bytecode != YIELD_VALUE:
                     first = frame.f_code.co_firstlineno
-                    self.cur_file_dict[(self.last_line, -first)] = None
+                    self.cur_file_dict[(self.last_line, -first)] += 1
             # Leaving this function, pop the filename stack.
             self.cur_file_dict, self.last_line = self.data_stack.pop()
         elif event == 'exception':
