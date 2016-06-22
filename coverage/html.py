@@ -212,6 +212,9 @@ class HtmlReporter(Reporter):
             missing_branch_arcs = analysis.missing_branch_arcs()
             arcs_executed = analysis.arcs_executed()
 
+        # Get lines execution counter
+        execution_counter = analysis.data.lines(fr.filename, count=True)
+
         # These classes determine which lines are highlighted by default.
         c_run = "run hide_run"
         c_exc = "exc"
@@ -259,7 +262,7 @@ class HtmlReporter(Reporter):
                 line_class.append(c_run)
 
                 # Add class for the heat map
-                line_count = analysis.data.lines(fr.filename, count=True).get(lineno, 0)
+                line_count = execution_counter.get(lineno, 0)
                 c_count = line_count2class(line_count)
                 if c_count not in line_class:
                     line_class.append(c_count)
