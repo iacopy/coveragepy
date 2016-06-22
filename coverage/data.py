@@ -275,8 +275,9 @@ class CoverageData(object):
         if 'lines' in data:
             self._lines = data['lines']
         if 'arcs' in data:
+            # Convert pair string keys in tuples
             self._arcs = dict(
-                (fname, [tuple(pair) for pair in arcs])
+                (fname, {eval(pair): count for pair, count in arcs.items()})
                 for fname, arcs in iitems(data['arcs'])
             )
         self._file_tracers = data.get('file_tracers', {})
@@ -378,7 +379,7 @@ class CoverageData(object):
                 new_arcs = set(self._arcs[filename])
                 new_arcs.update(arcs)
                 arcs = new_arcs
-            self._arcs[filename] = list(arcs)
+            self._arcs[filename] = arcs
 
         self._validate()
 
@@ -445,7 +446,10 @@ class CoverageData(object):
         file_data = {}
 
         if self._has_arcs():
-            file_data['arcs'] = self._arcs
+            file_data['arcs'] = {
+                filename: {str(arc): hits for arc, hits in self._arcs[filename].items()}
+                for filename in self._arcs
+            }
 
         if self._has_lines():
             file_data['lines'] = self._lines
@@ -532,7 +536,6 @@ class CoverageData(object):
                 if filename in self._arcs:
                     arcs = set(self._arcs[filename])
                     arcs.update(file_arcs)
-                    file_arcs = list(arcs)
                 self._arcs[filename] = file_arcs
 
         self._validate()
