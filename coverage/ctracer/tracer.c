@@ -711,7 +711,13 @@ CTracer_handle_line(CTracer *self, PyFrameObject *frame)
                             goto error;
                         }
 
-                        ret2 = PyDict_SetItem(self->cur_entry.file_data, this_line, Py_None);
+                        PyObject *count_obj = PyDict_GetItem(self->cur_entry.file_data, this_line);
+                        long count = count_obj ? PyLong_AsLong(count_obj) : 0;
+
+                        count_obj = PyLong_FromLong(count + 1);
+
+                        ret2 = PyDict_SetItem(self->cur_entry.file_data, this_line, count_obj);
+                        Py_DECREF(count_obj);
                         Py_DECREF(this_line);
                         if (ret2 < 0) {
                             goto error;
