@@ -174,14 +174,20 @@ CTracer_record_pair(CTracer *self, int l1, int l2)
 {
     int ret = RET_ERROR;
 
-    PyObject * t = NULL;
+    PyObject *t = NULL, *count_obj = NULL;
 
     t = Py_BuildValue("(ii)", l1, l2);
     if (t == NULL) {
         goto error;
     }
 
-    if (PyDict_SetItem(self->cur_entry.file_data, t, Py_None) < 0) {
+    count_obj = PyDict_GetItem(self->cur_entry.file_data, t);
+
+    long count = count_obj ? PyLong_AsLong(count_obj) : 0;
+
+    count_obj = PyLong_FromLong(count + 1);
+
+    if (PyDict_SetItem(self->cur_entry.file_data, t, count_obj) < 0) {
         goto error;
     }
 
@@ -189,6 +195,7 @@ CTracer_record_pair(CTracer *self, int l1, int l2)
 
 error:
     Py_XDECREF(t);
+    Py_XDECREF(count_obj);
 
     return ret;
 }
