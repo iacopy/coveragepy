@@ -718,7 +718,6 @@ CTracer_handle_line(CTracer *self, PyFrameObject *frame)
 
                         ret2 = PyDict_SetItem(self->cur_entry.file_data, this_line, count_obj);
                         Py_DECREF(count_obj);
-                        Py_DECREF(this_line);
                         if (ret2 < 0) {
                             goto error;
                         }
