@@ -8,8 +8,6 @@ import json
 import os
 import os.path
 import re
-import unittest
-
 import mock
 
 from coverage.backward import StringIO
@@ -431,7 +429,6 @@ class CoverageDataTest(DataTestHelpers, CoverageTest):
         self.assert_arcs3_data(covdata2)
 
 
-@unittest.skip('Fails if executed with other tests')
 class CoverageDataTestInTempDir(DataTestHelpers, CoverageTest):
     """Tests of CoverageData that need a temporary directory to make files."""
 
