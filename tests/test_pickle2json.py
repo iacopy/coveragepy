@@ -4,7 +4,7 @@
 """Tests for coverage.pickle2json"""
 
 
-from coverage.backward import pickle, iitems
+from coverage.backward import pickle
 from coverage.data import CoverageData
 from coverage.pickle2json import pickle2json
 
@@ -25,7 +25,7 @@ class Pickle2JsonTestInTempDir(DataTestHelpers, CoverageTest):
 
         # WARNING: manipulates data inside a test
         if covdata._arcs:
-            file_data['arcs'] = dict((f, list(amap)) for f, amap in iitems(covdata._arcs))
+            file_data['arcs'] = covdata._arcs
         else:
             file_data['lines'] = covdata._lines
 
