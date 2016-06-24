@@ -12,7 +12,7 @@ import mock
 
 from coverage.backward import StringIO
 from coverage.data import (CoverageData, CoverageDataFiles, debug_main, canonicalize_json_data,
-                           parse_json_loaded_arcs)
+                           parse_json_loaded_data)
 from coverage.files import PathAliases, canonical_filename
 from coverage.misc import CoverageException
 
@@ -94,7 +94,7 @@ class DataTestHelpers(CoverageTest):
         self.assert_line_counts(covdata, SUMMARY_3)
         self.assert_measured_files(covdata, MEASURED_FILES_3)
         self.assertCountEqual(covdata.lines("x.py"), X_PY_LINES_3)
-        after_load = parse_json_loaded_arcs({'x.py': X_PY_ARCS_3, 'y.py': Y_PY_ARCS_3})
+        after_load = parse_json_loaded_data({'x.py': X_PY_ARCS_3, 'y.py': Y_PY_ARCS_3})
         self.assertCountEqual(covdata.arcs("x.py"), after_load['x.py'])
         self.assertCountEqual(covdata.lines("y.py"), Y_PY_LINES_3)
         self.assertCountEqual(covdata.arcs("y.py"), after_load['y.py'])
