@@ -283,7 +283,7 @@ class CoverageData(object):
         if 'lines' in data:
             self._lines = data['lines']
         if 'arcs' in data:
-            self._arcs = parse_json_loaded_arcs(data['arcs'])
+            self._arcs = data['arcs']
 
         self._file_tracers = data.get('file_tracers', {})
         self._runs = data.get('runs', [])
@@ -324,6 +324,9 @@ class CoverageData(object):
         if 'lines' in raw:
             lines = raw['lines']
             raw['lines'] = {fn: {int(key): val for (key, val) in lines[fn].items()} for fn in lines.keys()}
+        if 'arcs' in raw:
+            arcs = raw['arcs']
+            raw['arcs'] = {fn: {eval(key): val for (key, val) in arcs[fn].items()} for fn in arcs.keys()}
         return raw
 
     @classmethod
@@ -733,15 +736,17 @@ class CoverageDataFiles(object):
                 file_be_gone(f)
 
 
-def parse_json_loaded_arcs(arcs):
-    """Convert pair string keys in tuples.
+def parse_json_loaded_data(data):
+    """Convert tring keys in evaluated Python objects (int,or tuple).
 
-    >>> parse_json_arcs({'a.py': {'(1, 2)': 5, '(2, 3)': 8}}) == {'a.py': {(1, 2): 5, (2, 3): 8}}
+    >>> parse_json_data({'a.py': {'1': 5, '2': 8}}) == {'a.py': {1: 5, 2: 8}}
+    True
+    >>> parse_json_data({'a.py': {'(1, 2)': 5, '(2, 3)': 8}}) == {'a.py': {(1, 2): 5, (2, 3): 8}}
     True
     """
     return dict(
-        (fname, {eval(pair): count for pair, count in file_arcs.items()})
-        for fname, file_arcs in iitems(arcs)
+        (fname, {eval(pair): count for pair, count in file_data.items()})
+        for fname, file_data in iitems(data)
     )
 
 
