@@ -3,7 +3,6 @@
 
 """Tests for coverage.pickle2json"""
 
-import unittest
 
 from coverage.backward import pickle, iitems
 from coverage.data import CoverageData
@@ -13,7 +12,6 @@ from tests.coveragetest import CoverageTest
 from tests.test_data import DataTestHelpers, LINES_1, ARCS_3
 
 
-@unittest.skip('It seems not isolated')
 class Pickle2JsonTestInTempDir(DataTestHelpers, CoverageTest):
     """Tests pickle2json.py."""
     # FIXME: In some cases it passes if ran alone and fails if ran with other tests.
