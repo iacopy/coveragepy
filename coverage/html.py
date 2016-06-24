@@ -31,6 +31,9 @@ STATIC_PATH = [
 ]
 
 
+HEATMAP_ENABLED = True  # TODO: meke it an option
+
+
 def data_filename(fname, pkgdir=""):
     """Return the path to a data file of ours.
 
@@ -208,16 +211,12 @@ class HtmlReporter(Reporter):
         # Get the numbers for this file.
         nums = analysis.numbers
 
-
-        # TODO: implement heat map support with c tracer and --branch
-        hetmap_available = not env.C_TRACER or not self.has_arcs
-
         if self.has_arcs:
             missing_branch_arcs = analysis.missing_branch_arcs()
             arcs_executed = analysis.arcs_executed()
 
         # Get lines execution counter
-        execution_counter = analysis.data.lines(fr.filename, count=hetmap_available)
+        execution_counter = analysis.data.lines(fr.filename, count=HEATMAP_ENABLED)
 
         # These classes determine which lines are highlighted by default.
         c_run = "run hide_run"
@@ -265,7 +264,7 @@ class HtmlReporter(Reporter):
             elif lineno in analysis.statements:
                 line_class.append(c_run)
 
-                if hetmap_available:
+                if HEATMAP_ENABLED:
                     # Add class for the heat map
                     line_count = execution_counter.get(lineno, 0)
                     c_count = line_count2class(line_count)
