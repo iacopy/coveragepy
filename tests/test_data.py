@@ -497,8 +497,8 @@ class CoverageDataTestInTempDir(DataTestHelpers, CoverageTest):
             },
             "arcs.dat": {
                 "arcs": {
-                    "x.py": [[-1, 1], [1, 2], [2, 3], [3, -1]],
-                    "y.py": [[-1, 17], [17, 23], [23, -1]],
+                    "x.py": ['(-1, 1)', '(1, 2)', '(2, 3)', '(3, -1)'],
+                    "y.py": ['(-1, 17)', '(17, 23)', '(23, -1)'],
                 },
                 "file_tracers": {"y.py": "magic_plugin"},
                 "runs": [

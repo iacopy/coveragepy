@@ -454,10 +454,7 @@ class CoverageData(object):
         file_data = {}
 
         if self._has_arcs():
-            file_data['arcs'] = {
-                filename: {str(arc): hits for arc, hits in self._arcs[filename].items()}
-                for filename in self._arcs
-            }
+            file_data['arcs'] = self._arcs
 
         if self._has_lines():
             file_data['lines'] = self._lines
@@ -470,7 +467,8 @@ class CoverageData(object):
 
         # Write the data to the file.
         file_obj.write(self._GO_AWAY)
-        # NB: keys are dumped as strings!
+        # Convert tuple keys (arcs) to string, to be damped to json
+        prepare_data_for_json_dump(file_data)
         json.dump(file_data, file_obj)
 
     def write_file(self, filename):
@@ -743,11 +741,28 @@ def parse_json_loaded_data(data):
     True
     >>> parse_json_data({'a.py': {'(1, 2)': 5, '(2, 3)': 8}}) == {'a.py': {(1, 2): 5, (2, 3): 8}}
     True
+
     """
     return dict(
         (fname, {eval(pair): count for pair, count in file_data.items()})
         for fname, file_data in iitems(data)
     )
+
+
+def prepare_data_for_json_dump(file_data):
+    """Prepare in place the coverage data to be safely dumped to JSON.
+
+    Actually, converts tuple keys to string.
+
+    Returns `None`.
+
+    """
+    if 'arcs' in file_data:
+        arcs_data = file_data['arcs']
+        file_data['arcs'] = {
+            filename: {str(arc): hits for arc, hits in arcs_data[filename].items()}
+            for filename in arcs_data
+        }
 
 
 def canonicalize_json_data(data):
@@ -791,6 +806,7 @@ def debug_main(args):
     for filename in (args or [".coverage"]):
         print("--- {0} ------------------------------".format(filename))
         data = CoverageData._read_raw_data_file(filename)
+        prepare_data_for_json_dump(data)
         if options.canonical:
             canonicalize_json_data(data)
         print(pretty_data(data))
