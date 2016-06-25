@@ -527,7 +527,7 @@ class CoverageData(object):
             for filename, file_lines in iitems(other_data._lines):
                 filename = aliases.map(filename)
                 if filename in self._lines:
-                    lines = self._lines[filename]
+                    lines = self._lines[filename].copy()
                     lines.update(file_lines)
                     self._lines[filename] = lines
                 else:
