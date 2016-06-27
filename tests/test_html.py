@@ -486,8 +486,7 @@ class HtmlStaticFileTest(CoverageTest):
         with self.assertRaisesRegex(CoverageException, msg):
             cov.html_report()
 
-import unittest
-unittest.skip('Skip for now to avoid pedantic failure log and concentrate in other failures')
+
 class HtmlGoldTests(CoverageGoldTest):
     """Tests of HTML reporting that use gold files."""
 
@@ -696,9 +695,9 @@ class HtmlGoldTests(CoverageGoldTest):
         compare("gold_partial", "out/partial", size_within=10, file_pattern="*.html")
         contains(
             "out/partial/partial_py.html",
-            '<p id="t8" class="stm run hide_run">',
-            '<p id="t11" class="stm run hide_run">',
-            '<p id="t14" class="stm run hide_run">',
+            '<p id="t8" class="stm run hide_run count0">',
+            '<p id="t11" class="stm run hide_run count0">',
+            '<p id="t14" class="stm run hide_run count0">',
             # The "if 0" and "if 1" statements are optimized away.
             '<p id="t17" class="pln">',
         )
