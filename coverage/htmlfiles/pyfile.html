@@ -77,19 +77,12 @@
         <tr>
             <td class="linenos">
 {% for line in lines -%}
-    <p id="n{{line.number}}" class="{{line.class}}">
-        <a href="#n{{line.number}}">{{line.number}}</a>
-    </p>
+    <p id="n{{line.number}}" class="{{line.class}}"><a href="#n{{line.number}}">{{line.number}}</a></p>
 {% endfor %}
             </td>
             <td class="linecount">
 {% for line in lines -%}
-    <p>
-        {% if line.num_executes -%}
-            <span>{{line.num_executes}}x</span>
-        {% endif -%}
-        &nbsp;
-    </p>
+    <p>{% if line.num_executes -%}<span>{{line.num_executes}}x</span>{% endif -%}&nbsp;</p>
 {% endfor %}
             </td>
             <td class="text">
