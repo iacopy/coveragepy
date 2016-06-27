@@ -395,7 +395,7 @@ class LoopArcTest(CoverageTest):
     def test_multiline_dict_comp(self):
         if env.PYVERSION < (2, 7):
             self.skipTest("Don't have set or dict comprehensions before 2.7")
-        if env.PYVERSION < (3, 5):
+        if env.PYVERSION < (3, 5, 1):
             arcz = "-42 2B B-4   2-4"
         else:
             arcz = "-32 2B B-3   2-3"
@@ -416,7 +416,7 @@ class LoopArcTest(CoverageTest):
             arcz=arcz,
         )
         # Multi dict comp:
-        if env.PYVERSION < (3, 5):
+        if env.PYVERSION < (3, 5, 1):
             arcz = "-42 2F F-4   2-4"
         else:
             arcz = "-32 2F F-3   2-3"
