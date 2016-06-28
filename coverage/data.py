@@ -3,7 +3,6 @@
 
 """Coverage data for coverage.py."""
 
-from collections import Counter
 import glob
 import itertools
 import json
@@ -15,7 +14,7 @@ import re
 import socket
 
 from coverage import env
-from coverage.backward import iitems, string_class
+from coverage.backward import Counter, iitems, string_class
 from coverage.debug import _TEST_NAME_FILE
 from coverage.files import PathAliases
 from coverage.misc import CoverageException, file_be_gone, isolate_module
@@ -323,10 +322,20 @@ class CoverageData(object):
         # =>    {'filename': {1: 5, 10: 3}, 'other_filename': {3: 2, 5: 15, 123: 1}}
         if 'lines' in raw:
             lines = raw['lines']
-            raw['lines'] = {fn: {int(key): val for (key, val) in lines[fn].items()} for fn in lines.keys()}
+            raw['lines'] = dict(
+                (fn, dict((int(key), val) for (key, val) in iitems(lines[fn])))
+                    for fn in lines.keys()
+            )
+            # TODO: When the support for python < 2.7 will be dropped, just use a dict comprehension:
+            # raw['lines'] = {fn: {int(key): val for (key, val) in iitems(lines[fn])} for fn in lines.keys()}
         if 'arcs' in raw:
             arcs = raw['arcs']
-            raw['arcs'] = {fn: {eval(key): val for (key, val) in arcs[fn].items()} for fn in arcs.keys()}
+            raw['arcs'] = dict(
+                (fn, dict((eval(key), val) for (key, val) in iitems(arcs[fn])))
+                    for fn in arcs.keys()
+            )
+            # TODO: When the support for python < 2.7 will be removed, just use a dict comprehension::
+            # raw['arcs'] = {fn: {eval(key): val for (key, val) in iitems(arcs[fn])} for fn in arcs.keys()}
         return raw
 
     @classmethod
@@ -743,8 +752,9 @@ def parse_json_loaded_data(data):
     True
 
     """
+    # TODO: When the support for python < 2.7 will be dropped, just use a dict comprehension
     return dict(
-        (fname, {eval(pair): count for pair, count in file_data.items()})
+        (fname, dict((eval(pair), count) for pair, count in iitems(file_data)))
         for fname, file_data in iitems(data)
     )
 
@@ -759,10 +769,11 @@ def prepare_data_for_json_dump(file_data):
     """
     if 'arcs' in file_data:
         arcs_data = file_data['arcs']
-        file_data['arcs'] = {
-            filename: {str(arc): hits for arc, hits in arcs_data[filename].items()}
+        # TODO: When the support for python < 2.7 will be dropped, just use a dict comprehension
+        file_data['arcs'] = dict(
+            (filename, dict((str(arc), hits) for arc, hits in iitems(arcs_data[filename])))
             for filename in arcs_data
-        }
+        )
 
 
 def canonicalize_json_data(data):
