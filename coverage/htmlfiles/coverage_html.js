@@ -242,22 +242,16 @@ coverage.index_ready = function ($) {
           return;
         }
 
-        if (percentage < 80) {
+        if (percentage < 50) {
           color = 'rgba(255, 150, 150, 0.4)';
-        } else if (percentage > 98) {
-          color = 'rgba(150, 255, 150, 0.8)';
-        } else if (percentage > 96) {
-          color = 'rgba(150, 255, 150, 0.7)';
-        } else if (percentage > 94) {
-          color = 'rgba(150, 255, 150, 0.6)';
-        } else if (percentage > 92) {
-          color = 'rgba(150, 255, 150, 0.5)';
-        } else if (percentage > 90) {
+        } else if (percentage > 99) {
+          color = 'rgba(150, 255, 150, 0.9)';
+        } else if (percentage >= 90) {
           color = 'rgba(150, 255, 150, 0.4)';
-        } else if (percentage > 86) {
-          color = 'rgba(150, 255, 150, 0.3)';
-        } else if (percentage > 82) {
-          color = 'rgba(150, 255, 150, 0.2)';
+        } else if (percentage >= 80) {
+          color = 'rgba(150, 255, 150, 0.25)';
+        } else if (percentage >= 70) {
+          color = 'rgba(150, 255, 150, 0.1)';
         }
 
         $node.css('background-color', color);
