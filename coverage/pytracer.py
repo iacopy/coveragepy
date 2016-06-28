@@ -3,11 +3,11 @@
 
 """Raw data collector for coverage.py."""
 
-from collections import Counter
 import dis
 import sys
 
 from coverage import env
+from coverage.backward import Counter
 
 # We need the YIELD_VALUE opcode below, in a comparison-friendly form.
 YIELD_VALUE = dis.opmap['YIELD_VALUE']

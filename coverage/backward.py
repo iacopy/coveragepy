@@ -25,6 +25,13 @@ try:
 except ImportError:
     import ConfigParser as configparser
 
+# collections.Counter is not available before 2.7
+try:
+    from collections import Counter
+except ImportError:
+    # Use embedded implementation
+    from counter import Counter
+
 # What's a string called?
 try:
     string_class = basestring
