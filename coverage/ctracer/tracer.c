@@ -181,10 +181,11 @@ CTracer_record_pair(CTracer *self, int l1, int l2)
         goto error;
     }
 
-    count_obj = PyDict_GetItem(self->cur_entry.file_data, t);
+    count_obj = PyDict_GetItemWithError(self->cur_entry.file_data, t);
+    if (count_obj == NULL && PyErr_Occurred())
+        goto error;
 
     long count = count_obj ? PyLong_AsLong(count_obj) : 0;
-
     count_obj = PyLong_FromLong(count + 1);
 
     if (PyDict_SetItem(self->cur_entry.file_data, t, count_obj) < 0) {
@@ -395,7 +396,7 @@ CTracer_handle_call(CTracer *self, PyFrameObject *frame)
 
     /* Check if we should trace this line. */
     filename = frame->f_code->co_filename;
-    disposition = PyDict_GetItem(self->should_trace_cache, filename);
+    disposition = PyDict_GetItemWithError(self->should_trace_cache, filename);
     if (disposition == NULL) {
         if (PyErr_Occurred()) {
             goto error;
@@ -475,7 +476,7 @@ CTracer_handle_call(CTracer *self, PyFrameObject *frame)
                 /* Check the dynamic source filename against the include rules. */
                 PyObject * included = NULL;
                 int should_include;
-                included = PyDict_GetItem(self->should_trace_cache, tracename);
+                included = PyDict_GetItemWithError(self->should_trace_cache, tracename);
                 if (included == NULL) {
                     PyObject * should_include_bool;
                     if (PyErr_Occurred()) {
@@ -507,7 +508,7 @@ CTracer_handle_call(CTracer *self, PyFrameObject *frame)
     }
 
     if (tracename != Py_None) {
-        PyObject * file_data = PyDict_GetItem(self->data, tracename);
+        PyObject * file_data = PyDict_GetItemWithError(self->data, tracename);
 
         if (file_data == NULL) {
             if (PyErr_Occurred()) {
@@ -718,13 +719,15 @@ CTracer_handle_line(CTracer *self, PyFrameObject *frame)
                             goto error;
                         }
 
-                        PyObject *count_obj = PyDict_GetItem(self->cur_entry.file_data, this_line);
-                        long count = count_obj ? PyLong_AsLong(count_obj) : 0;
+                        PyObject *count_obj = PyDict_GetItemWithError(self->cur_entry.file_data, this_line);
+                        if (!count_obj && PyErr_Occurred()) {
+                            goto error;
+                        }
 
+                        long count = count_obj ? PyLong_AsLong(count_obj) : 0;
                         count_obj = PyLong_FromLong(count + 1);
 
                         ret2 = PyDict_SetItem(self->cur_entry.file_data, this_line, count_obj);
-                        Py_DECREF(count_obj);
                         if (ret2 < 0) {
                             goto error;
                         }
