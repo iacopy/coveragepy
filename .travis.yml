@@ -6,32 +6,28 @@ language: python
 sudo: false
 
 python:
-  - 3.5
+  - 3.5.1
 
 env:
-  #- TOXENV=py26
-  #- TOXENV=py27
-  #- TOXENV=py33
-  #- TOXENV=py34
+  - TOXENV=py26
+  - TOXENV=py27
+  - TOXENV=py33
+  - TOXENV=py34
   - TOXENV=py35
-  #- TOXENV=pypy
-  #- TOXENV=py27 COVERAGE_COVERAGE=yes
-  #- TOXENV=py35 COVERAGE_COVERAGE=yes
+  - TOXENV=pypy
+  - TOXENV=py27 COVERAGE_COVERAGE=yes
+  - TOXENV=py35 COVERAGE_COVERAGE=yes
 
 sudo: false
 
 install:
   - pip install -r requirements/tox.pip
-  - pip install coveralls
 
 script:
   - tox
   - if [ $COVERAGE_COVERAGE == 'yes' ]; then python igor.py combine_html; fi
   - if [ $COVERAGE_COVERAGE == 'yes' ]; then pip install codecov; fi
   - if [ $COVERAGE_COVERAGE == 'yes' ]; then codecov; fi
-
-after_script:
-    coveralls
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
