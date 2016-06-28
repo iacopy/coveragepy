@@ -80,7 +80,8 @@
                 <td>{{totals.n_branches}}</td>
                 <td>{{totals.n_partial_branches}}</td>
                 {% endif %}
-                <td class="right" data-ratio="{{totals.ratio_covered|pair}}">{{totals.pc_covered_str}}%</td>
+                <td class="right" data-ratio="{{totals.ratio_covered|pair}}"
+                    data-percentage="{{totals.pc_covered_str}}">{{totals.pc_covered_str}}%</td>
             </tr>
         </tfoot>
         <tbody>
