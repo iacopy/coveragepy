@@ -18,7 +18,7 @@ os = isolate_module(os)
 try:
     # Use the C extension code when we can, for speed.
     from coverage.tracer import CTracer, CFileDisposition
-except ImportError:
+except ImportError as err:
     # Couldn't import the C extension, maybe it isn't built.
     if os.getenv('COVERAGE_TEST_TRACER') == 'c':
         # During testing, we use the COVERAGE_TEST_TRACER environment variable
@@ -28,6 +28,7 @@ except ImportError:
         # errors. I'm using sys.exit here instead of an exception because an
         # exception here causes all sorts of other noise in unittest.
         sys.stderr.write("*** COVERAGE_TEST_TRACER is 'c' but can't import CTracer!\n")
+        sys.stderr.write(str(err) + '\n')
         sys.exit(1)
     CTracer = None
 
