@@ -232,7 +232,7 @@ coverage.index_ready = function ($) {
     coverage.wire_up_filter();
 
     // Add heat map to index.html rows
-    $("table.index > tbody > tr.file")
+    $("table.index > tbody > tr.file, table.index > tfoot > tr.total")
       .each(function (index, node) {
         var $node = $(node);
         var percentage = parseFloat($node.find('[data-percentage]').data('percentage'));
