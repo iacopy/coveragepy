@@ -22,6 +22,18 @@ pyint_as_int(PyObject * pyint, int *pint)
     return RET_OK;
 }
 
+/* Custom PyDict_GetItemWithError() for Python 2.X */
+#if PY_MAJOR_VERSION == 2
+static PyObject *
+PyDict_GetItemWithError(PyObject *op, PyObject *key)
+{
+	int result = PyDict_Contains(op, key);
+	if (result == -1 || result == 0)
+		return NULL;
+	return PyDict_GetItem(op, key);
+}
+#endif
+
 
 /* Interned strings to speed GetAttr etc. */
 
