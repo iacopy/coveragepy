@@ -10,7 +10,7 @@ import os.path
 import re
 import mock
 
-from coverage.backward import StringIO
+from coverage.backward import Counter, StringIO
 from coverage.data import (CoverageData, CoverageDataFiles, debug_main, canonicalize_json_data,
                            parse_json_loaded_data)
 from coverage.files import PathAliases, canonical_filename
@@ -183,7 +183,7 @@ class CoverageDataTest(DataTestHelpers, CoverageTest):
         covdata = CoverageData()
         covdata.add_lines(LINES_1)
         covdata.touch_file('zzz.py')
-        self.assertEqual(covdata.lines('zzz.py'), [])
+        self.assertEqual(covdata.lines('zzz.py'), Counter())
         self.assertIsNone(covdata.lines('no_such_file.py'))
 
     def test_run_info(self):
@@ -198,9 +198,9 @@ class CoverageDataTest(DataTestHelpers, CoverageTest):
         covdata = CoverageData()
         covdata.add_arcs(ARCS_3)
         covdata.touch_file('zzz.py')
-        self.assertEqual(covdata.lines('zzz.py'), [])
+        self.assertEqual(covdata.lines('zzz.py'), Counter())
         self.assertIsNone(covdata.lines('no_such_file.py'))
-        self.assertEqual(covdata.arcs('zzz.py'), [])
+        self.assertEqual(covdata.arcs('zzz.py'), Counter())
         self.assertIsNone(covdata.arcs('no_such_file.py'))
 
     def test_file_tracer_name(self):

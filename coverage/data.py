@@ -452,7 +452,7 @@ class CoverageData(object):
             where = self._arcs
         else:
             where = self._lines
-        where.setdefault(filename, [])
+        where.setdefault(filename, Counter())
 
         self._validate()
 
