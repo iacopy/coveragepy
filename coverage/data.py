@@ -171,10 +171,10 @@ class CoverageData(object):
         """Get the list of lines executed for a file.
 
         If the file was not measured, returns None.  A file might be measured,
-        and have no lines executed, in which case an empty list is returned.
+        and have no lines executed, in which case an empty `Counter` is returned.
 
-        If the file was executed, returns a list of integers, the line numbers
-        executed in the file. The list is in no particular order.
+        If the file was executed, returns a `Counter` with the number of passes
+        for each line executed in the file. The result is in no particular order.
 
         """
         if self._arcs is not None:
