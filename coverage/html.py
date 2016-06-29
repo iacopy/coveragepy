@@ -216,7 +216,7 @@ class HtmlReporter(Reporter):
             arcs_executed = analysis.arcs_executed()
 
         # Get lines execution counter
-        execution_counter = analysis.data.lines(fr.filename, count=HEATMAP_ENABLED)
+        execution_counter = analysis.data.lines(fr.filename)
 
         # These classes determine which lines are highlighted by default.
         c_run = "run hide_run"
