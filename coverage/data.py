@@ -362,7 +362,7 @@ class CoverageData(object):
             self._lines = {}
         for filename, linenos in iitems(line_data):
             if filename in self._lines:
-                new_linenos = set(self._lines[filename])
+                new_linenos = Counter(self._lines[filename])
                 new_linenos.update(linenos)
                 linenos = new_linenos
             self._lines[filename] = linenos  # Counter
@@ -388,7 +388,7 @@ class CoverageData(object):
             self._arcs = {}
         for filename, arcs in iitems(arc_data):
             if filename in self._arcs:
-                new_arcs = set(self._arcs[filename])
+                new_arcs = Counter(self._arcs[filename])
                 new_arcs.update(arcs)
                 arcs = new_arcs
             self._arcs[filename] = arcs
