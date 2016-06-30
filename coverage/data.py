@@ -181,9 +181,9 @@ class CoverageData(object):
             arcs = self._arcs.get(filename)
             if arcs is not None:
                 res = Counter()
-                for pair, count in iitems(arcs):
-                    if pair[0] > 0:
-                        res[pair[0]] += count
+                for (last, lineno), count in iitems(arcs):
+                    if lineno > 0:
+                        res[lineno] += count
                 return res
         elif self._lines is not None:
             return self._lines.get(filename)
