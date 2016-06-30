@@ -253,23 +253,23 @@ td.text {
     border-left: 2px solid #00ff00;
     }
 /* heatmap coloring */
-.text p.count0 { background: #fff; }
-.text p.count1 { background: #efe; }
-.text p.count2 { background: #dfd; }
-.text p.count3 { background: #cfc; }
-.text p.count4 { background: #bfb; }
-.text p.count5 { background: #afa; }
-.text p.count6 { background: #9f9; }
-.text p.count7 { background: #8f8; }
-.text p.count8 { background: #7f7; }
-.text p.count9 { background: #6f6; }
-.text p.count10 { background: #5f5; }
-.text p.count11 { background: #4f4; }
-.text p.count12 { background: #3f3; }
-.text p.count13 { background: #2f2; }
-.text p.count14 { background: #1f1; }
-.text p.count15 { background: #0f0; }
-.text p.count_max { background: #0dd; }
+.text p.count0 { background: rgba(150, 255, 150, 0.00); }
+.text p.count1 { background: rgba(150, 255, 150, 0.25); }
+.text p.count2 { background: rgba(150, 255, 150, 0.30); }
+.text p.count3 { background: rgba(150, 255, 150, 0.35); }
+.text p.count4 { background: rgba(150, 255, 150, 0.40); }
+.text p.count5 { background: rgba(150, 255, 150, 0.45); }
+.text p.count6 { background: rgba(150, 255, 150, 0.50); }
+.text p.count7 { background: rgba(150, 255, 150, 0.55); }
+.text p.count8 { background: rgba(150, 255, 150, 0.60); }
+.text p.count9 { background: rgba(150, 255, 150, 0.65); }
+.text p.count10 { background: rgba(150, 255, 150, 0.70); }
+.text p.count11 { background: rgba(150, 255, 150, 0.75); }
+.text p.count12 { background: rgba(150, 255, 150, 0.80); }
+.text p.count13 { background: rgba(150, 255, 150, 0.85); }
+.text p.count14 { background: rgba(150, 255, 150, 0.90); }
+.text p.count15 { background: rgba(150, 255, 150, 0.95); }
+.text p.count_max { background: rgba(150, 255, 150, 1.00); }
 
 .text p.exc {
     background: #eeeeee;
